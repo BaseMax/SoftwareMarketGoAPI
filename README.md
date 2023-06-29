@@ -118,4 +118,90 @@ Retrieves all software listings associated with a specific user. The :id paramet
 
 Retrieves all reviews posted by a specific user. The :id parameter represents the ID of the user.
 
+## Test Routes
+
+### `GET /software
+
+```shell
+curl -X GET http://localhost:8080/software
+```
+
+### `GET /software/:id
+
+```shell
+curl -X GET http://localhost:8080/software/1
+```
+
+### `POST /software
+
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{"name": "Software Name", "description": "Software Description", "price": 9.99}' http://localhost:8080/software
+```
+
+### `PUT /software/:id
+
+```shell
+curl -X PUT -H "Content-Type: application/json" -d '{"name": "Updated Software Name", "description": "Updated Software Description", "price": 14.99}' http://localhost:8080/software/1
+```
+
+### `DELETE /software/:id
+
+```shell
+curl -X DELETE http://localhost:8080/software/1
+```
+
+### `GET /software/category/:category
+
+```shell
+curl -X GET http://localhost:8080/software/category/category-name
+```
+
+### `GET /software/search?query=:searchQuery
+
+```shell
+curl -X GET http://localhost:8080/software/search?query=search-query
+```
+
+### `GET /software/top-rated
+
+```shell
+curl -X GET http://localhost:8080/software/top-rated
+```
+
+### `GET /software/recommended
+
+```shell
+curl -X GET http://localhost:8080/software/recommended
+```
+
+### `POST /software/:id/ratings
+
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{"rating": 5}' http://localhost:8080/software/1/ratings
+```
+
+### `GET /software/:id/reviews
+
+```shell
+curl -X GET http://localhost:8080/software/1/reviews
+```
+
+### `POST /software/:id/reviews
+
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{"title": "Review Title", "content": "Review Content", "user_id": 1}' http://localhost:8080/software/1/reviews
+```
+
+### `GET /users/:id/software
+
+```shell
+curl -X GET http://localhost:8080/users/1/software
+```
+
+### `GET /users/:id/reviews`
+
+```shell
+curl -X GET http://localhost:8080/users/1/reviews
+```
+
 Copyright 2023, Max Base
