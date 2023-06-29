@@ -48,15 +48,15 @@ Use a REST client (e.g., cURL, Postman) to interact with the API endpoints.
 
 ## API Routes
 
-- `GET /software`
+### `GET /software`
 
 Retrieves all software available in the marketplace.
 
-- `GET /software/:id`
+### `GET /software/:id`
 
 Retrieves a specific software by its ID.
 
-- `POST /software`
+### `POST /software`
 
 Creates a new software listing in the marketplace. Requires the following JSON fields in the request body:
 
@@ -64,7 +64,7 @@ Creates a new software listing in the marketplace. Requires the following JSON f
   - description (string): Description of the software.
   - price (float): Price of the software.
 
-- `PUT /software/:id`
+### `PUT /software/:id`
 
 Updates an existing software listing in the marketplace. Requires the following JSON fields in the request body:
 
@@ -72,37 +72,37 @@ Updates an existing software listing in the marketplace. Requires the following 
   - description (string): Updated description of the software.
   - price (float): Updated price of the software.
 
-- `DELETE /software/:id`
+### `DELETE /software/:id`
 
 Deletes a software listing from the marketplace based on its ID.
 
-- `GET /software/category/:category`
+### `GET /software/category/:category`
 
 Retrieves all software listings in a specific category. The :category parameter represents the category of the software.
 
-- `GET /software/search?query=:searchQuery`
+### `GET /software/search?query=:searchQuery`
 
 Searches for software listings based on a given search query. The :searchQuery parameter represents the search query string.
 
-- `GET /software/top-rated`
+### `GET /software/top-rated`
 
 Retrieves the top-rated software listings in the marketplace based on user ratings.
 
-- `GET /software/recommended`
+### `GET /software/recommended`
 
 Retrieves a list of recommended software listings for the current user. The recommendations can be based on user preferences, previous purchases, or any other relevant criteria.
 
-- `POST /software/:id/ratings`
+### `POST /software/:id/ratings`
 
 Adds a user rating for a specific software listing. Requires the following JSON fields in the request body:
 
 rating (integer): The user's rating for the software (e.g., a value between 1 and 5).
 
-- `GET /software/:id/reviews`
+### `GET /software/:id/reviews`
 
 Retrieves all reviews for a specific software listing.
 
-- `POST /software/:id/reviews`
+### `POST /software/:id/reviews`
 
 Adds a new review for a specific software listing. Requires the following JSON fields in the request body:
 
@@ -110,11 +110,11 @@ Adds a new review for a specific software listing. Requires the following JSON f
   - content (string): Content of the review.
   - user_id (integer): ID of the user who posted the review.
 
-- `GET /users/:id/software`
+### `GET /users/:id/software`
 
 Retrieves all software listings associated with a specific user. The :id parameter represents the ID of the user.
 
-- `GET /users/:id/reviews`
+### `GET /users/:id/reviews`
 
 Retrieves all reviews posted by a specific user. The :id parameter represents the ID of the user.
 
