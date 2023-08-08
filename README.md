@@ -2,9 +2,18 @@
 
 SoftwareMarketGoAPI is a RESTful API built with Golang that provides endpoints to manage software products in a marketplace. It allows users to perform operations such as creating, retrieving, updating, and deleting software products.
 
+## Features
+
+- User authentication and authorization using JSON Web Tokens (JWT)
+- CRUD operations for blog posts
+- Error handling and response formatting
+- Input validation and data sanitization
+- Logging and request/response middleware
+- Database integration using MYSQL gorm orm
+
 ## Installation
 
-Make sure you have Go installed. You can download it from the official website: https://golang.org/dl/
+Make sure you have Go installed on your system. You can download and install it from the official Go website: https://golang.org
 
 Clone the repository:
 
@@ -12,196 +21,153 @@ Clone the repository:
 git clone https://github.com/BaseMax/SoftwareMarketGoAPI.git
 ```
 
+
 Navigate to the project directory:
 
 ```shell
 cd SoftwareMarketGoAPI
 ```
 
-Install the dependencies:
+Install the project dependencies:
 
-```shell
-go get -u github.com/.../...
-go get -u github.com/.../...
-go get -u github.com/.../...
+```bash
+go mod download
 ```
 
-Set up the database connection by modifying the config.go file according to your MySQL database credentials.
+Set up the environment variables:
 
-Run the migrations to create the necessary tables:
+- Create a `.env` file in the root directory of the project.
 
-```shell
-go run migrations/migrate.go
+- Define the following environment variables in the `.env` file:
+
+```plaintext
+PORT=8080
+DB_HOST=your_database_host
+DB_PORT=your_database_port
+DB_USER=your_database_user
+DB_PASSWORD=your_database_password
+DB_NAME=your_database_name
+JWT_SECRET=your_jwt_secret
 ```
 
-## Usage
+Run the application:
 
-Start the API server:
-
-```shell
-go run main.go
+```bash
+go run main.og
 ```
 
-The server will start running on http://localhost:8080.
+The API will be accessible at http://localhost:8080 by default. You can change the port in the .env file if necessary.
 
-Use a REST client (e.g., cURL, Postman) to interact with the API endpoints.
+## API Endpoints
 
-## API Routes
+The following endpoints are available in the panel:
 
-### `GET /software`
+| Method | 	Endpoint | 	Description |
+| ---- | -------- | -------- |
+| POST |	/panel/software/	| Add new software |
+| PUT |	/panel/software/:id	| Update software |
+| DELETE |	/panel/software/:id	| Delete software |
+| POST |	/panel/users/admin	| Add new admin |
+| POST |	/panel/users/login	| Login admin |
+| PUT |	/panel/users/admin/:id	| Update admin |
 
-Retrieves all software available in the marketplace.
+The following endpoints are available in the api:
 
-### `GET /software/:id`
+| Method | 	Endpoint | 	Description |
+| ---- | -------- | -------- |
+| GET |	/api/software/	| Get all softwares |
+| GET |	/api/software/:id	| Get a software by id |
+| GET |	/api/software/category/:category	| Get software by category |
+| GET |	/api/software/search/:query	| Search softwares |
+| GET |	/api/software/top-rated	| Get top rated softwares |
+| GET |	/api/software/recommended	| Get recommended softwares |
+| GET |	/api/software/:id/reviews	| Get software's reviews |
+| POST |	/api/software/:id/ratings	| Add rate to software |
+| POST |	/api/software/:id/reviews	| Add reviews to software |
+| GET |	/api/users/reviews	| Get user's reviews |
+| GET |	/api/users/:id/software	| Get associated software |
+| POST |	/api/users/login	| Login user |
+| POST |	/api/users/register	| Register uesr |
 
-Retrieves a specific software by its ID.
 
-### `POST /software`
 
-Creates a new software listing in the marketplace. Requires the following JSON fields in the request body:
+## Database Schema
 
-  - name (string): Name of the software.
-  - description (string): Description of the software.
-  - price (float): Price of the software.
+The application uses a GORM orm MYSQL and have these data modles and use auto migrate:
 
-### `PUT /software/:id`
+```go
 
-Updates an existing software listing in the marketplace. Requires the following JSON fields in the request body:
+type Software struct {
+	ID          uuid.UUID `json:"id" gorm:"primaryKey"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	Price       float64   `json:"price"`
+	Creator     string    `json:"creator"`
+	Version     string    `json:"version"`
+	Category    string    `json:"category_list" `
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+}
 
-  - name (string): Updated name of the software.
-  - description (string): Updated description of the software.
-  - price (float): Updated price of the software.
+type Rate struct {
+	ID         uuid.UUID `json:"id" gorm:"primaryKey"`
+	Value      uint8     `json:"value"` // value can be between 1 and 5
+	SoftwareId uuid.UUID `json:"software_id"`
+	UserId     uuid.UUID `json:"user_id" `
+	RatedAt    time.Time `json:"Rated_at"`
+}
 
-### `DELETE /software/:id`
+type Review struct {
+	ID         uuid.UUID `json:"id" gorm:"primaryKey"`
+	Title      string    `json:"title"`
+	Content    string    `json:"content"`
+	SoftwareId uuid.UUID `json:"software_id" `
+	UserId     uuid.UUID `json:"user_id" `
+	CreatedAt  time.Time `json:"created_at"`
+	UpdatedAt  time.Time `json:"updated_at"`
+}
 
-Deletes a software listing from the marketplace based on its ID.
+type User struct {
+	ID                 uuid.UUID `json:"id" gorm:"primaryKey"`
+	Name               string    `json:"name"`
+	Email              string    `json:"email"`
+	Password           string    `json:"password"`
+	IsAdmin            bool      `json:"is_admin"`
+	FavoriteCategories string    `json:"favorite_categories"`
+	CreatedAt          time.Time `json:"created_at"`
+	UpdatedAt          time.Time `json:"updated_at"`
+}
 
-### `GET /software/category/:category`
-
-Retrieves all software listings in a specific category. The :category parameter represents the category of the software.
-
-### `GET /software/search?query=:searchQuery`
-
-Searches for software listings based on a given search query. The :searchQuery parameter represents the search query string.
-
-### `GET /software/top-rated`
-
-Retrieves the top-rated software listings in the marketplace based on user ratings.
-
-### `GET /software/recommended`
-
-Retrieves a list of recommended software listings for the current user. The recommendations can be based on user preferences, previous purchases, or any other relevant criteria.
-
-### `POST /software/:id/ratings`
-
-Adds a user rating for a specific software listing. Requires the following JSON fields in the request body:
-
-rating (integer): The user's rating for the software (e.g., a value between 1 and 5).
-
-### `GET /software/:id/reviews`
-
-Retrieves all reviews for a specific software listing.
-
-### `POST /software/:id/reviews`
-
-Adds a new review for a specific software listing. Requires the following JSON fields in the request body:
-
-  - title (string): Title of the review.
-  - content (string): Content of the review.
-  - user_id (integer): ID of the user who posted the review.
-
-### `GET /users/:id/software`
-
-Retrieves all software listings associated with a specific user. The :id parameter represents the ID of the user.
-
-### `GET /users/:id/reviews`
-
-Retrieves all reviews posted by a specific user. The :id parameter represents the ID of the user.
-
-## Test Routes
-
-### `GET /software`
-
-```shell
-curl -X GET http://localhost:8080/software
 ```
 
-### `GET /software/:id`
+## Dependencies
 
-```shell
-curl -X GET http://localhost:8080/software/1
-```
+The project utilizes the following third-party libraries:
 
-### `POST /software`
+- `go-playground/validator/v10`: Struct field validation
+- `golang-jwt/jwt/v4`: JWT implementation 
+- `google/uuid`: UUID generation
+- `joho/godotenv`: Environment variable loading
+- `labstack/echo/v4`: HTTP web framework
+- `x/crypto`: Hashing password library
+- `driver/mysql`: Struct field validation
+- `gorm`: Database orm
 
-```shell
-curl -X POST -H "Content-Type: application/json" -d '{"name": "Software Name", "description": "Software Description", "price": 9.99}' http://localhost:8080/software
-```
 
-### `PUT /software/:id`
+Make sure to run go mod download as mentioned in the installation steps to fetch these dependencies.
 
-```shell
-curl -X PUT -H "Content-Type: application/json" -d '{"name": "Updated Software Name", "description": "Updated Software Description", "price": 14.99}' http://localhost:8080/software/1
-```
+## Contributing
 
-### `DELETE /software/:id`
+Contributions to this project are welcome. Feel free to open issues and submit pull requests.
 
-```shell
-curl -X DELETE http://localhost:8080/software/1
-```
+## License
 
-### `GET /software/category/:category`
+This project is licensed under the GPL-3.0 License.
 
-```shell
-curl -X GET http://localhost:8080/software/category/category-name
-```
+# Postman collection
 
-### `GET /software/search?query=:searchQuery`
+Software-Market-Go-API/software-market.postman_collection.json
 
-```shell
-curl -X GET http://localhost:8080/software/search?query=search-query
-```
+Copyright 2023, Max Base, AmirAtashghah
 
-### `GET /software/top-rated`
-
-```shell
-curl -X GET http://localhost:8080/software/top-rated
-```
-
-### `GET /software/recommended`
-
-```shell
-curl -X GET http://localhost:8080/software/recommended
-```
-
-### `POST /software/:id/ratings`
-
-```shell
-curl -X POST -H "Content-Type: application/json" -d '{"rating": 5}' http://localhost:8080/software/1/ratings
-```
-
-### `GET /software/:id/reviews`
-
-```shell
-curl -X GET http://localhost:8080/software/1/reviews
-```
-
-### `POST /software/:id/reviews`
-
-```shell
-curl -X POST -H "Content-Type: application/json" -d '{"title": "Review Title", "content": "Review Content", "user_id": 1}' http://localhost:8080/software/1/reviews
-```
-
-### `GET /users/:id/software`
-
-```shell
-curl -X GET http://localhost:8080/users/1/software
-```
-
-### `GET /users/:id/reviews`
-
-```shell
-curl -X GET http://localhost:8080/users/1/reviews
-```
-
-Copyright 2023, Max Base
+Copyright 2023, Asrez group
