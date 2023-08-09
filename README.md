@@ -56,7 +56,7 @@ Run the application:
 go run main.og
 ```
 
-The API will be accessible at http://localhost:8080 by default. You can change the port in the .env file if necessary.
+The API will be accessible at `http://localhost:8080` by default. You can change the port in the .env file if necessary.
 
 ## API Endpoints
 
