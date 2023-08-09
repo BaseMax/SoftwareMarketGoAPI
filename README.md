@@ -164,10 +164,15 @@ Contributions to this project are welcome. Feel free to open issues and submit p
 
 This project is licensed under the GPL-3.0 License.
 
-# Postman collection
+## Postman collection
 
 Software-Market-Go-API/software-market.postman_collection.json
 
-Copyright 2023, Max Base, AmirAtashghah
+## Authors
+
+- AmirAtashghah
+- Max Base
+
+Copyright 2023, Max Base
 
 Copyright 2023, Asrez group
