@@ -1,10 +1,11 @@
 module Software-Market-Go-API
 
 go 1.20
+toolchain go1.24.1
 
 require (
 	github.com/go-playground/validator/v10 v10.14.1
-	github.com/golang-jwt/jwt/v4 v4.5.1
+	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/google/uuid v1.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.11.1
